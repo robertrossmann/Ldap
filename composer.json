@@ -1,0 +1,20 @@
+{
+    "name": "alaneor/ldap",
+    "description": "A simple class encapsulation of php's ldap functions",
+    "keywords": ["Active Directory", "ldap", "mock"],
+    "license": "BSD-3",
+    "authors": [
+        {
+            "name": "Robert Rossmann",
+            "email": "rr.rossmann@me.com",
+            "homepage": "https://github.com/Alaneor"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-ldap": "*"
+    },
+    "autoload": {
+        "psr-0": { "Ldap\\": "." }
+    }
+}
