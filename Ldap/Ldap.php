@@ -27,9 +27,6 @@ class Ldap
 		'connect',
 		'delete',
 		//'dn2ufn',				// @todo
-		//'err2str',
-		//'errno',
-		//'error',
 		//'explode_dn',			// @todo
 		'get_entries',
 		//'ldap_8859_to_t61',	// @todo
