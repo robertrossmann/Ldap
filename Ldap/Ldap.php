@@ -28,7 +28,6 @@ class Ldap
 		'delete',
 		//'dn2ufn',				// @todo
 		//'explode_dn',			// @todo
-		'get_entries',
 		//'ldap_8859_to_t61',	// @todo
 		'ldap_list',
 		'ldap_read',
