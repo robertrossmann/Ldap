@@ -32,7 +32,6 @@ class Ldap
 		//'error',
 		//'explode_dn',			// @todo
 		'get_entries',
-		'get_option',
 		//'ldap_8859_to_t61',	// @todo
 		'ldap_list',
 		'ldap_read',
