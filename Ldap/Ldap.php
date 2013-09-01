@@ -106,16 +106,6 @@ class Ldap
 		return new Response( $this, $return );
 	}
 
-	public function paged_result_response( Response $response )
-	{
-		$cookie		= null;
-		$estimated	= null;
-
-		$return = ldap_control_paged_result_response( $this->resource, $response->result, $cookie, $estimated );
-
-		return new Response( $this, $return, ['cookie' => $cookie, 'estimated' => $estimated] );
-	}
-
 
 	public function __call( $method, $args )
 	{

@@ -32,6 +32,8 @@ namespace Ldap;
  * @property-read		binary			$cookie		For paged result responses, a cookie will be here, if returned from server
  * $property-read		array			$referrals	When checking for referrals,
  *
+ * @property-read		int				$estimated	The estimated number of objects remaining to return from server
+ * 													when doing paged searches ( not all ldap implementations return this value )
  */
 class Response
 {
@@ -41,9 +43,10 @@ class Response
 	protected $message;				// Textual representation of the status code
 	protected $referrals;
 	protected $matchedDN;
-	protected $custom_data = [];	// Any custom data passed to constructor, such as cookie etc.
+	protected $cookie;				// A pagination cookie if returned from server
+	protected $estimated;			// An estimated number of objects yet to be returned from server for paged searches
 
-	public function __construct( Ldap $link, $result = null, array $custom_data = null )
+	public function __construct( Ldap $link, $result = null )
 	{
 		$this->result = $result;
 
@@ -54,14 +57,16 @@ class Response
 			$this->message = ldap_error( $link->resource() );
 
 			( count( $this->referrals ) == 0 ) && $this->referrals = null;	// Remove the array if there's nothing inside
+
+			// Try to extract pagination cookie and estimated number of objects to be returned
+			// Since there's no way to tell if pagination has been enabled or not, I am suppressing php errors
+			@ldap_control_paged_result_response( $link->resource(), $result, $this->cookie, $this->estimated );
 		}
 		else
 		{
 			$this->code		= ldap_errno( $link->resource() );
 			$this->message	= ldap_error( $link->resource() );
 		}
-
-		$this->custom_data	= $custom_data;
 	}
 
 
@@ -72,8 +77,6 @@ class Response
 	 */
 	public function __get( $property )
 	{
-		if ( isset( $this->custom_data[$property] ) ) return $this->custom_data[$property];
-
 		return $this->$property;
 	}
 
