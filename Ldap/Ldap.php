@@ -25,19 +25,16 @@ class Ldap
 		'bind',
 		'compare',
 		'connect',
-		'count_entries',
 		'delete',
-		'dn2ufn',
-		'err2str',
-		'errno',
-		'error',
-		'explode_dn',
+		//'dn2ufn',				// @todo
+		//'err2str',
+		//'errno',
+		//'error',
+		//'explode_dn',			// @todo
 		'get_attributes',
-		'get_dn',
 		'get_entries',
 		'get_option',
-		'get_values_len',
-		'ldap_8859_to_t61',
+		//'ldap_8859_to_t61',	// @todo
 		'ldap_list',
 		'ldap_read',
 		'ldap_search',
@@ -50,7 +47,7 @@ class Ldap
 		'set_option',
 		'set_rebind_proc',
 		'start_tls',
-		't61_to_8859',
+		//'t61_to_8859',		// @todo
 	];
 
 
