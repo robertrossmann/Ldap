@@ -98,7 +98,12 @@ class Ldap
 	{
 		$args = func_get_args();
 
-		return $this->__call( 'ldap_control_paged_result', $args );
+		// Prepend the resource to the arguments array
+		array_unshift( $args, $this->resource );
+
+		$return = call_user_func_array( 'ldap_control_paged_result', $args );
+
+		return new Response( $this, $return );
 	}
 
 	public function paged_result_response( Response $response )
