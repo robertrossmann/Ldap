@@ -108,6 +108,7 @@ class Ldap
 		if ( ! in_array( $method, static::$allowed_methods ) )
 		{
 			$trace = debug_backtrace();
+			$method = $trace[0]['class'] . $trace[0]['type'] . $method;
 			trigger_error(
 				"Call to undefined method $method in " . $trace[0]['file'] .
 				" on line " . $trace[0]['line'],
@@ -133,6 +134,7 @@ class Ldap
 		if ( ! in_array( $method, static::$allowed_static_methods ) )
 		{
 			$trace = debug_backtrace();
+			$method = $trace[0]['class'] . $trace[0]['type'] . $method;
 			trigger_error(
 				"Call to undefined method $method in " . $trace[0]['file'] .
 				" on line " . $trace[0]['line'],
