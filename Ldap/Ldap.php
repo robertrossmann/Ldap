@@ -105,7 +105,7 @@ class Ldap
 		{
 			$trace = debug_backtrace();
 			trigger_error(
-				"Call to undefined function $method in " . $trace[0]['file'] .
+				"Call to undefined method $method in " . $trace[0]['file'] .
 				" on line " . $trace[0]['line'],
 				E_USER_ERROR
 			);
