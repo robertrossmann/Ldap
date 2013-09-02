@@ -66,6 +66,18 @@ Since `list` cannot be used as method name, all lookup functions are defined wit
 
 Here's a list of methods you can use.
 
+##### Class methods
+
+Class methods do not return an instance of Ldap\Response but directly the output of the mapped function.
+
+ - `Ldap\Ldap::dn2ufn()`
+ - `Ldap\Ldap::err2str()`
+ - `Ldap\Ldap::explode_dn()`
+ - `Ldap\Ldap::ldap_8859_to_t61()`
+ - `Ldap\Ldap::t61_to_8859()`
+
+##### Instance methods
+
  - `Ldap\Ldap::resource()` -> get the ldap resource identifier
  - `Ldap\Ldap::add()`
  - `Ldap\Ldap::bind()`
