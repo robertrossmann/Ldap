@@ -79,6 +79,7 @@ Class methods do not return an instance of Ldap\Response but directly the output
 ##### Instance methods
 
  - `Ldap\Ldap::resource()` -> get the ldap resource identifier
+ - `Ldap\Ldap::rootDSE()` -> read the rootDSE entry of the ldap server
  - `Ldap\Ldap::add()`
  - `Ldap\Ldap::bind()`
  - `Ldap\Ldap::compare()`
