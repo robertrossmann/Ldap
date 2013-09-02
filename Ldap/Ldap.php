@@ -20,24 +20,20 @@ namespace Ldap;
  */
 class Ldap
 {
+	protected static $allowed_static_methods = [
+		'dn2ufn',
+		'err2str',
+		'explode_dn',
+		'ldap_8859_to_t61',
+		't61_to_8859',
+	];
+
 	protected static $allowed_methods = [
 		'add',
 		'bind',
 		'compare',
 		'connect',
-		'count_entries',
 		'delete',
-		'dn2ufn',
-		'err2str',
-		'errno',
-		'error',
-		'explode_dn',
-		'get_attributes',
-		'get_dn',
-		'get_entries',
-		'get_option',
-		'get_values_len',
-		'ldap_8859_to_t61',
 		'ldap_list',
 		'ldap_read',
 		'ldap_search',
@@ -50,7 +46,6 @@ class Ldap
 		'set_option',
 		'set_rebind_proc',
 		'start_tls',
-		't61_to_8859',
 	];
 
 
@@ -98,17 +93,12 @@ class Ldap
 	{
 		$args = func_get_args();
 
-		return $this->__call( 'ldap_control_paged_result', $args );
-	}
+		// Prepend the resource to the arguments array
+		array_unshift( $args, $this->resource );
 
-	public function paged_result_response( Response $response )
-	{
-		$cookie		= null;
-		$estimated	= null;
+		$return = call_user_func_array( 'ldap_control_paged_result', $args );
 
-		$return = ldap_control_paged_result_response( $this->resource, $response->result, $cookie, $estimated );
-
-		return new Response( $this, $return, ['cookie' => $cookie, 'estimated' => $estimated] );
+		return new Response( $this, $return );
 	}
 
 
@@ -119,7 +109,7 @@ class Ldap
 		{
 			$trace = debug_backtrace();
 			trigger_error(
-				"Call to undefined function $method in " . $trace[0]['file'] .
+				"Call to undefined method $method in " . $trace[0]['file'] .
 				" on line " . $trace[0]['line'],
 				E_USER_ERROR
 			);
@@ -134,6 +124,29 @@ class Ldap
 		$return = call_user_func_array( $method, $args );
 
 		return new Response( $this, $return );
+	}
+
+
+	public static function __callStatic( $method, $args )
+	{
+		// Check if this method can be called on this object
+		if ( ! in_array( $method, static::$allowed_static_methods ) )
+		{
+			$trace = debug_backtrace();
+			trigger_error(
+				"Call to undefined method $method in " . $trace[0]['file'] .
+				" on line " . $trace[0]['line'],
+				E_USER_ERROR
+			);
+		}
+
+		// Prefix the method with ldap_ if it's not already prefixed
+		if ( stripos( $method, 'ldap_' ) !== 0 ) $method = 'ldap_' . $method;
+
+		$data = call_user_func_array( $method, $args );
+		unset( $data['count'] );	// No one cares!
+
+		return $data;
 	}
 
 	/**
