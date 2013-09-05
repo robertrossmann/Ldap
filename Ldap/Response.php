@@ -55,6 +55,7 @@ class Response
 		{
 			// Extract the data from the resource
 			$this->data = ldap_get_entries( $link->resource(), $result );
+			$this->data = $this->cleanup_result( $this->data );
 
 			// Get the status code, matched DN and referrals from the response
 			ldap_parse_result( $link->resource(), $result, $this->code, $this->matchedDN, $this->message, $this->referrals );
@@ -74,6 +75,35 @@ class Response
 			$this->code		= ldap_errno( $link->resource() );
 			$this->message	= ldap_error( $link->resource() );
 		}
+	}
+
+
+	protected function cleanup_result( $result )
+	{
+		// First, unset the 'count'
+		unset( $result['count'] );
+
+		// Let's loop through all returned objects
+		foreach ( $result as &$object )
+		{
+			// Unset the 'count' of returned attributes per object
+			unset( $object['count'] );
+
+			// Loop through all attributes
+			foreach ( $object as $attribute => &$value )
+			{
+				// Numeric indexes contain only attribute names - we don't need those
+				if ( is_numeric( $attribute ) )
+				{
+					unset( $object[$attribute] );
+					continue;
+				}
+
+				if ( is_array( $value ) ) unset( $value['count'] );
+			}
+		}
+
+		return $result;
 	}
 
 

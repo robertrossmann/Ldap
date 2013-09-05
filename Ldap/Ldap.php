@@ -50,6 +50,7 @@ class Ldap
 
 
 	protected $resource;		// The ldap resource
+	protected $rootDSE;			// The rootDSE entry of the server, if loaded by self::rootDSE()
 
 
 	/**
@@ -71,6 +72,46 @@ class Ldap
 	public function resource()
 	{
 		return $this->resource;
+	}
+
+	/**
+	 * Read the rootDSE entry and optionally include extra information
+	 *
+	 * @param		string|array		A single entry or an array of rootDSE entries to be present
+	 * 									in addition to the default set ( ['*', '+'] )
+	 *
+	 * @return		array|Response		An array with all rootDSE entries or an instance of
+	 * 									the Response class containing the error information
+	 */
+	public function rootDSE( $optional = null )
+	{
+		$optional = (array)$optional;
+		$optional = array_map( 'strtolower', $optional );
+
+		// Do not load data from server if we already have it loaded
+		if ( ! empty( $this->rootDSE ) )
+		{
+			$present = array_keys( $this->rootDSE );
+			$missing = array_diff( $optional, $present );
+
+			// Nothing more to be loaded - return the rootDSE!
+			if ( empty( $missing ) ) return $this->rootDSE;
+
+			// Load attributes that have been requested for this call,
+			// but also load any previously loaded optional attributes
+			$optional = array_unique( array_merge( $present, $optional ) );
+		}
+
+		// Read the rootDSE entry from the server
+		$resp = $this->ldap_read( '', 'objectclass=*', array_merge( ['*', '+'], $optional ) );
+
+		// If the query was not successful, return the response to
+		// the other guy to figure out what to do
+		if ( $resp->code !== 0 ) return $resp;
+
+		$this->rootDSE = $resp->data[0];
+
+		return $this->rootDSE;
 	}
 
 	public function sort( Response $response, $attribute )
@@ -108,6 +149,7 @@ class Ldap
 		if ( ! in_array( $method, static::$allowed_methods ) )
 		{
 			$trace = debug_backtrace();
+			$method = $trace[0]['class'] . $trace[0]['type'] . $method;
 			trigger_error(
 				"Call to undefined method $method in " . $trace[0]['file'] .
 				" on line " . $trace[0]['line'],
@@ -133,6 +175,7 @@ class Ldap
 		if ( ! in_array( $method, static::$allowed_static_methods ) )
 		{
 			$trace = debug_backtrace();
+			$method = $trace[0]['class'] . $trace[0]['type'] . $method;
 			trigger_error(
 				"Call to undefined method $method in " . $trace[0]['file'] .
 				" on line " . $trace[0]['line'],
@@ -144,7 +187,7 @@ class Ldap
 		if ( stripos( $method, 'ldap_' ) !== 0 ) $method = 'ldap_' . $method;
 
 		$data = call_user_func_array( $method, $args );
-		unset( $data['count'] );	// No one cares!
+		if ( isset( $data['count'] ) ) unset( $data['count'] );	// No one cares!
 
 		return $data;
 	}
