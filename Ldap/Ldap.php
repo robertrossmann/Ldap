@@ -187,7 +187,7 @@ class Ldap
 		if ( stripos( $method, 'ldap_' ) !== 0 ) $method = 'ldap_' . $method;
 
 		$data = call_user_func_array( $method, $args );
-		unset( $data['count'] );	// No one cares!
+		if ( isset( $data['count'] ) ) unset( $data['count'] );	// No one cares!
 
 		return $data;
 	}
