@@ -75,6 +75,52 @@ class Response
 			$this->code		= ldap_errno( $link->resource() );
 			$this->message	= ldap_error( $link->resource() );
 		}
+
+		// Active Directory conceals some additional error codes in the ErrorMessage of the response
+		// that we cannot get to with ldap_errno() in authentication failures - let's try to
+		// extract them!
+		if ( $this->code == 49 )
+		{
+			$message = null;
+			ldap_get_option( $link->resource(), Option::ErrorString, $message );
+
+			if ( stripos( $message, 'AcceptSecurityContext' ) !== false )
+			{
+				$message = explode( ', ', $message );
+				end( $message );
+				$message = prev( $message );
+
+				$this->code = explode( ' ', $message )[1];
+
+				// For compatibility reasons with standard ldap, if the error code
+				// is 52e let's replace it with 49 ( their meanings are equal, it's just
+				// Microsoft doing it its own way again )
+				if ( $this->code == '52e' ) $this->code = ResponseCode::InvalidCredentials;
+			}
+		}
+	}
+
+	/**
+	 * Does this response represent a successful ldap operation or was there an error?
+	 *
+	 * @return		bool		true for successful ldap operation, false if there was a failure
+	 */
+	public function ok()
+	{
+		switch ( $this->code )
+		{
+			// These response codes do not represent a failed operation; everything else does
+			case ResponseCode::Success:
+			case ResponseCode::SizelimitExceeded:
+			case ResponseCode::CompareFalse:
+			case ResponseCode::CompareTrue:
+
+				return true;
+
+			default:
+
+				return false;
+		}
 	}
 
 
