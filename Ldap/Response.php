@@ -77,6 +77,29 @@ class Response
 		}
 	}
 
+	/**
+	 * Does this response represent a successful ldap operation or was there an error?
+	 *
+	 * @return		bool		true for successful ldap operation, false if there was a failure
+	 */
+	public function ok()
+	{
+		switch ( $this->code )
+		{
+			// These response codes do not represent a failed operation; everything else does
+			case ResponseCode::Success:
+			case ResponseCode::SizelimitExceeded:
+			case ResponseCode::CompareFalse:
+			case ResponseCode::CompareTrue:
+
+				return true;
+
+			default:
+
+				return false;
+		}
+	}
+
 
 	protected function cleanup_result( $result )
 	{
