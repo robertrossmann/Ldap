@@ -1,7 +1,7 @@
 {
     "name": "alaneor/ldap",
     "description": "A simple class encapsulation of php's ldap functions",
-    "keywords": ["Active Directory", "ldap", "mock"],
+    "keywords": ["active directory", "ldap", "openldap", "oop", "object", "mock"],
     "license": "BSD-3-Clause",
     "authors": [
         {
