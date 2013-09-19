@@ -2,7 +2,7 @@
     "name": "alaneor/ldap",
     "description": "A simple class encapsulation of php's ldap functions",
     "keywords": ["Active Directory", "ldap", "mock"],
-    "license": "BSD-3",
+    "license": "BSD-3-Clause",
     "authors": [
         {
             "name": "Robert Rossmann",
