@@ -146,6 +146,19 @@ class Response
 				}
 
 				if ( is_array( $value ) ) unset( $value['count'] );
+
+				// Some ldap servers ( i.e. AD ) may split too large attributes into smaller
+				// attributes with a special notation in the attribute's name ( i.e. "member;0-4999" ).
+				// Let's join those together.
+
+				// Search for ';' in attribute's name, returning string BEFORE ';'
+				$actualAttribute = strstr( $attribute, ';', true );
+				if ( $actualAttribute !== false )	// Yes, this attribute has been split
+				{
+					$object[$actualAttribute] = array_merge( $object[$actualAttribute], $value );
+					unset( $object[$attribute] );
+					continue;
+				}
 			}
 		}
 
