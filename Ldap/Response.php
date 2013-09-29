@@ -53,15 +53,15 @@ class Response
 
 		if ( is_resource( $result ) )
 		{
-			// Extract the data from the resource
-			$this->data = ldap_get_entries( $link->resource(), $result );
-			$this->data = $this->cleanup_result( $this->data );
-
 			// Get the status code, matched DN and referrals from the response
 			ldap_parse_result( $link->resource(), $result, $this->code, $this->matchedDN, $this->message, $this->referrals );
 
 			// Get the string representation of the status code
 			$this->message = ldap_err2str( $this->code );
+
+			// Extract the data from the resource
+			$this->data = ldap_get_entries( $link->resource(), $result );
+			$this->data = $this->cleanup_result( $this->data );
 
 			// Remove the referrals array if there's nothing inside
 			( count( $this->referrals ) == 0 ) && $this->referrals = null;
@@ -146,6 +146,19 @@ class Response
 				}
 
 				if ( is_array( $value ) ) unset( $value['count'] );
+
+				// Some ldap servers ( i.e. AD ) may split too large attributes into smaller
+				// attributes with a special notation in the attribute's name ( i.e. "member;0-4999" ).
+				// Let's join those together.
+
+				// Search for ';' in attribute's name, returning string BEFORE ';'
+				$actualAttribute = strstr( $attribute, ';', true );
+				if ( $actualAttribute !== false )	// Yes, this attribute has been split
+				{
+					$object[$actualAttribute] = array_merge( $object[$actualAttribute], $value );
+					unset( $object[$attribute] );
+					continue;
+				}
 			}
 		}
 
