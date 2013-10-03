@@ -32,7 +32,6 @@ class Ldap
 		'add',
 		'bind',
 		'compare',
-		'connect',
 		'delete',
 		'ldap_list',
 		'ldap_read',
