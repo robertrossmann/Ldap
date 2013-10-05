@@ -45,6 +45,7 @@ class Ldap
 		'set_option',
 		'set_rebind_proc',
 		'start_tls',
+		'unbind',
 	];
 
 
@@ -189,13 +190,5 @@ class Ldap
 		if ( isset( $data['count'] ) ) unset( $data['count'] );	// No one cares!
 
 		return $data;
-	}
-
-	/**
-	 * @internal
-	 */
-	public function __destruct()
-	{
-		ldap_unbind( $this->resource );
 	}
 }
