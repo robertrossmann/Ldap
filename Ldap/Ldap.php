@@ -88,7 +88,8 @@ class Ldap
 		$optional = (array)$optional;
 		$optional = array_map( 'strtolower', $optional );
 
-		// Do not load data from server if we already have it loaded
+		// If we already have some data from rootDSE loaded, check if there's
+		// more required; otherwise just return the current data
 		if ( ! empty( $this->rootDSE ) )
 		{
 			$present = array_keys( $this->rootDSE );
