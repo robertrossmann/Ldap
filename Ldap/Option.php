@@ -20,7 +20,7 @@ namespace Ldap;
  *
  * @see		<a href="http://www.php.net/manual/en/function.ldap-get-option.php">PHP - ldap_get_option()</a>
  */
-class Option
+class Option extends Enumeration\Enumeration
 {
 	const Deref				= 2;
 	const Sizelimit			= 3;
@@ -36,7 +36,4 @@ class Option
 	const DiagnosticMessage	= 50;
 	const MatchedDN			= 51;
 	const NetworkTimeout	= 20485;
-
-
-	final private function __construct() {}
 }
