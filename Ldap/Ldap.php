@@ -107,7 +107,7 @@ class Ldap
 
 		// If the query was not successful, return the response to
 		// the other guy to figure out what to do
-		if ( $resp->code !== 0 ) return $resp;
+		if ( ! $resp->ok() ) return $resp;
 
 		$this->rootDSE = $resp->data[0];
 
