@@ -12,7 +12,8 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "ext-ldap": "*"
+        "ext-ldap": "*",
+        "alaneor/enumeration": "~0.1"
     },
     "autoload": {
         "psr-0": { "Ldap\\": "." }

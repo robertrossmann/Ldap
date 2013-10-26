@@ -18,7 +18,7 @@ namespace Ldap;
 /**
  * A construct definining most of the ldap response codes
  */
-class ResponseCode
+class ResponseCode extends Enumeration\Enumeration
 {
 	const Success						= 0;
 	const OperationsError				= 1;
@@ -68,7 +68,4 @@ class ResponseCode
 	const AccountDisabled				= 533;
 	const AccountExpired				= 701;
 	const UserMustResetPassword			= 773;
-
-
-	final private function __construct() {}
 }
