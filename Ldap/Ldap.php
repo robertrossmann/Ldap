@@ -79,11 +79,13 @@ class Ldap
 	 *
 	 * @param		string|array		A single entry or an array of rootDSE entries to be present
 	 * 									in addition to the default set ( ['*', '+'] )
+	 * @param		bool				If true, any and all previously loaded rootDSE data
+	 *                    				will be discarded and loaded from the server again
 	 *
 	 * @return		array|Response		An array with all rootDSE entries or an instance of
 	 * 									the Response class containing the error information
 	 */
-	public function rootDSE( $optional = null )
+	public function rootDSE( $optional = null, $force = false )
 	{
 		$optional = (array)$optional;
 		$optional = array_map( 'strtolower', $optional );
@@ -96,7 +98,7 @@ class Ldap
 			$missing = array_diff( $optional, $present );
 
 			// Nothing more to be loaded - return the rootDSE!
-			if ( empty( $missing ) ) return $this->rootDSE;
+			if ( empty( $missing ) && ! $force ) return $this->rootDSE;
 
 			// Load attributes that have been requested for this call,
 			// but also load any previously loaded optional attributes
