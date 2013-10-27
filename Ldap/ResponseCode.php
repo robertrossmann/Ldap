@@ -18,7 +18,7 @@ namespace Ldap;
 /**
  * A construct definining most of the ldap response codes
  */
-class ResponseCode extends Enumeration\Enumeration
+class ResponseCode extends \Enumeration\Enumeration
 {
   const Success                       = 0;
   const OperationsError               = 1;

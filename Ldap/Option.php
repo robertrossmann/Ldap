@@ -20,7 +20,7 @@ namespace Ldap;
  *
  * @see     <a href="http://www.php.net/manual/en/function.ldap-get-option.php">PHP - ldap_get_option()</a>
  */
-class Option extends Enumeration\Enumeration
+class Option extends \Enumeration\Enumeration
 {
   const Deref             = 2;
   const Sizelimit         = 3;
