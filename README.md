@@ -14,7 +14,7 @@ This library provides a class encapsulation of php's ldap functions. This might 
 ### Requirements
 
  - PHP 5.4.0 and newer with LDAP support ( [setup instructions](http://www.php.net/manual/en/ldap.installation.php) )
- - OpenSSL module for SSL / TLS connections ( [setup instructions](http://cz1.php.net/manual/en/openssl.installation.php) )
+ - OpenSSL module for SSL / TLS connections ( [setup instructions](http://www.php.net/manual/en/openssl.installation.php) )
 
 #### Via Composer
 
