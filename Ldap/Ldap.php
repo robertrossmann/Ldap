@@ -103,7 +103,7 @@ class Ldap
 
     // If we already have some data from rootDSE loaded, check if there's
     // more required; otherwise just return the current data
-    if ( $this->rootDSE instanceof Response && ! empty( $this->rootDSE->data ) )
+    if ( $this->rootDSE instanceof Response && is_array( $this->rootDSE->data ) )
     {
       $missing  = array_diff( $attributes, $this->rootDSEAttributes );
 
