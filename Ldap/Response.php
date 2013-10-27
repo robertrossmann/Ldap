@@ -72,7 +72,7 @@ class Response
     }
     else
     {
-      $this->code   = ldap_errno( $link->resource() );
+      $this->code     = ldap_errno( $link->resource() );
       $this->message  = ldap_error( $link->resource() );
     }
 
