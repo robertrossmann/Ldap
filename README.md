@@ -26,7 +26,7 @@ This library provides a class encapsulation of php's ldap functions. This might 
 You use the `Ldap\Ldap` class to connect to an ldap server. Simply construct the instance with the proper server hostname/IP address and optional port ( default is 389 ) and then use any of the below described functions to work with the connection.
 
 ### Example code
-```
+```php
 // Include Composer's autoloader
 include 'vendor/autoload.php';
 
