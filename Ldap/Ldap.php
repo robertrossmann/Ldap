@@ -49,8 +49,9 @@ class Ldap
   ];
 
 
-  protected $resource;    // The ldap resource
-  protected $rootDSE;     // The rootDSE entry of the server, if loaded by self::rootDSE()
+  protected $resource;          // The ldap resource
+  protected $rootDSE;           // The rootDSE entry of the server, if loaded by self::rootDSE()
+  protected $rootDSEAttributes; // The rootDSE attributes that were requested to be retrieved last time
 
 
   /**
@@ -86,44 +87,39 @@ class Ldap
   }
 
   /**
-   * Read the rootDSE entry and optionally include extra information
+   * Read the rootDSE data
    *
-   * @param   string|array    A single entry or an array of rootDSE entries to be present
-   *                          in addition to the default set ( ['*', '+'] )
+   * @param   string|array    A single entry or an array of rootDSE entries to be loaded
    * @param   bool            If true, any and all previously loaded rootDSE data
    *                          will be discarded and loaded from the server again
    *
-   * @return  array|Response  An array with all rootDSE entries or an instance of
-   *                          the Response class containing the error information
+   * @return  Response        An instance of the Response class containing the rootDSE data
+   *                          on success, or the reason for failure otherwise
    */
-  public function rootDSE( $optional = null, $force = false )
+  public function rootDSE( $attributes = ['*', '+'], $force = false )
   {
-    $optional = (array)$optional;
-    $optional = array_map( 'strtolower', $optional );
+    $attributes = (array)$attributes;
+    $attributes = array_map( 'strtolower', $attributes );
 
     // If we already have some data from rootDSE loaded, check if there's
     // more required; otherwise just return the current data
-    if ( ! empty( $this->rootDSE ) )
+    if ( $this->rootDSE instanceof Response && ! empty( $this->rootDSE->data ) )
     {
-      $present = array_keys( $this->rootDSE );
-      $missing = array_diff( $optional, $present );
+      $missing  = array_diff( $attributes, $this->rootDSEAttributes );
 
-      // Nothing more to be loaded - return the rootDSE!
+      // Nothing more to be loaded and no force-reload required - return the rootDSE!
       if ( empty( $missing ) && ! $force ) return $this->rootDSE;
-
-      // Load attributes that have been requested for this call,
-      // but also load any previously loaded optional attributes
-      $optional = array_unique( array_merge( $present, $optional ) );
     }
 
     // Read the rootDSE entry from the server
-    $resp = $this->ldap_read( '', 'objectclass=*', array_merge( ['*', '+'], $optional ) );
+    $resp = $this->ldap_read( '', 'objectclass=*', $attributes );
 
     // If the query was not successful, return the response to
     // the other guy to figure out what to do
     if ( ! $resp->ok() ) return $resp;
 
-    $this->rootDSE = $resp->data[0];
+    $this->rootDSEAttributes  = $attributes;  // Save the list of loaded attributes for later
+    $this->rootDSE            = $resp;        // Save the response for later
 
     return $this->rootDSE;
   }
