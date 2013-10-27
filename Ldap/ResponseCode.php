@@ -7,7 +7,7 @@
  * For full copyright and license information, please see the LICENSE file
  *
  * @author      Robert Rossmann <rr.rossmann@me.com>
- * @copyright   2012-2013 Robert Rossmann
+ * @copyright   2013 Robert Rossmann
  * @link        https://github.com/Alaneor/Ldap
  * @license     http://choosealicense.com/licenses/bsd-3-clause   BSD (3-Clause) License
  */
