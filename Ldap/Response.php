@@ -178,6 +178,6 @@ class Response
 
   public function __destroy()
   {
-    if ( is_resource( $this->result ) ) ldap_free_result( $this->result );
+    is_resource( $this->result ) && ldap_free_result( $this->result );
   }
 }

@@ -171,7 +171,7 @@ class Ldap
     array_unshift( $args, $this->resource );
 
     // Prefix the method with ldap_ if it's not already prefixed
-    if ( stripos( $method, 'ldap_' ) !== 0 ) $method = 'ldap_' . $method;
+    ( stripos( $method, 'ldap_' ) !== 0 ) && $method = 'ldap_' . $method;
 
     $return = call_user_func_array( $method, $args );
 
@@ -194,7 +194,7 @@ class Ldap
     }
 
     // Prefix the method with ldap_ if it's not already prefixed
-    if ( stripos( $method, 'ldap_' ) !== 0 ) $method = 'ldap_' . $method;
+    ( stripos( $method, 'ldap_' ) !== 0 ) && $method = 'ldap_' . $method;
 
     $data = call_user_func_array( $method, $args );
     if ( isset( $data['count'] ) ) unset( $data['count'] ); // No one cares!
