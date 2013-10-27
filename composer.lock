@@ -1,0 +1,75 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "9fd3bb8cdfeef028b1b96b6e0acebe77",
+    "packages": [
+        {
+            "name": "alaneor/enumeration",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Alaneor/Enumeration.git",
+                "reference": "cc92134936570b2238bbacce1e94446fbb29c10f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Alaneor/Enumeration/zipball/cc92134936570b2238bbacce1e94446fbb29c10f",
+                "reference": "cc92134936570b2238bbacce1e94446fbb29c10f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "codeception/codeception": "~1.7",
+                "phpdocumentor/phpdocumentor": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Enumeration\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Rossmann",
+                    "email": "rr.rossmann@me.com",
+                    "homepage": "https://github.com/Alaneor"
+                }
+            ],
+            "description": "A simple Typedef Enum implementation for php",
+            "homepage": "https://github.com/Alaneor/Enumeration",
+            "keywords": [
+                "constant",
+                "enum",
+                "enumeration",
+                "static list license",
+                "typedef"
+            ],
+            "time": "2013-10-26 22:05:11"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": {
+        "php": ">=5.4.0",
+        "ext-ldap": "*"
+    },
+    "platform-dev": [
+
+    ]
+}

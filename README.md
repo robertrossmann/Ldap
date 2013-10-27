@@ -14,7 +14,7 @@ This library provides a class encapsulation of php's ldap functions. This might 
 ### Requirements
 
  - PHP 5.4.0 and newer with LDAP support ( [setup instructions](http://www.php.net/manual/en/ldap.installation.php) )
- - OpenSSL module for SSL / TLS connections ( [setup instructions](http://cz1.php.net/manual/en/openssl.installation.php) )
+ - OpenSSL module for SSL / TLS connections ( [setup instructions](http://www.php.net/manual/en/openssl.installation.php) )
 
 #### Via Composer
 
@@ -23,10 +23,10 @@ This library provides a class encapsulation of php's ldap functions. This might 
 
 ## Documentation
 
-You use the `Ldap\Ldap` class to connect to an ldap server. Simply construct the class with the proper server URL/IP address and optional port ( default is 389 ) and then use any of the below described functions to work with the connection.
+You use the `Ldap\Ldap` class to connect to an ldap server. Simply construct the instance with the proper server hostname/IP address and optional port ( default is 389 ) and then use any of the below described functions to work with the connection.
 
 ### Example code
-```
+```php
 // Include Composer's autoloader
 include 'vendor/autoload.php';
 
@@ -83,7 +83,6 @@ Class methods do not return an instance of Ldap\Response but directly the output
  - `Ldap\Ldap::add()`
  - `Ldap\Ldap::bind()`
  - `Ldap\Ldap::compare()`
- - `Ldap\Ldap::connect()`
  - `Ldap\Ldap::delete()`
  - `Ldap\Ldap::get_option()`
  - `Ldap\Ldap::ldap_list()`
@@ -100,6 +99,7 @@ Class methods do not return an instance of Ldap\Response but directly the output
  - `Ldap\Ldap::set_rebind_proc()`
  - `Ldap\Ldap::sort()`
  - `Ldap\Ldap::start_tls()`
+ - `Ldap\Ldap::unbind()`
 
 ### Response structure
 
