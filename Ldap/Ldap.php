@@ -56,12 +56,23 @@ class Ldap
   /**
    * Connect to an ldap server at specified port
    *
+   * By default, the connection will be established using LDAPv3
+   * protocol. If you need to use LDAPv2 you can set the protocol version
+   * yourself after construction, but before you attempt to bind.
+   *
+   * <code>
+   * $ldap = new Ldap\Ldap( 'example.com' );  // Uses LDAPv3 automatically
+   * $ldap->set_option( Ldap\Option::ProtocolVersion, 2 ); Downgrade to v2
+   * </code>
+   *
    * @param   string          A server to be connected to
    * @param   int             An optional port to use for connection
    */
   public function __construct( $server, $port = 389 )
   {
     $this->resource = ldap_connect( $server, $port );
+    // Use LDAPv3 by default
+    $this->set_option( Option::ProtocolVersion, 3 );
   }
 
   /**
