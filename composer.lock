@@ -3,20 +3,20 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "9fd3bb8cdfeef028b1b96b6e0acebe77",
+    "hash": "7d43614fd209035e6e2a590295c789f8",
     "packages": [
         {
-            "name": "alaneor/enumeration",
-            "version": "0.1",
+            "name": "dreamscapes/enumeration",
+            "version": "0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Alaneor/Enumeration.git",
-                "reference": "cc92134936570b2238bbacce1e94446fbb29c10f"
+                "url": "https://github.com/Dreamscapes/Enumeration.git",
+                "reference": "4a63fce2a43bb4c2de0de29105a837f76f93a584"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Alaneor/Enumeration/zipball/cc92134936570b2238bbacce1e94446fbb29c10f",
-                "reference": "cc92134936570b2238bbacce1e94446fbb29c10f",
+                "url": "https://api.github.com/repos/Dreamscapes/Enumeration/zipball/4a63fce2a43bb4c2de0de29105a837f76f93a584",
+                "reference": "4a63fce2a43bb4c2de0de29105a837f76f93a584",
                 "shasum": ""
             },
             "require": {
@@ -29,7 +29,7 @@
             "type": "library",
             "autoload": {
                 "psr-0": {
-                    "Enumeration\\": "src"
+                    "Dreamscapes\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -44,7 +44,7 @@
                 }
             ],
             "description": "A simple Typedef Enum implementation for php",
-            "homepage": "https://github.com/Alaneor/Enumeration",
+            "homepage": "https://github.com/Dreamscapes/Enumeration",
             "keywords": [
                 "constant",
                 "enum",
@@ -52,7 +52,7 @@
                 "static list license",
                 "typedef"
             ],
-            "time": "2013-10-26 22:05:11"
+            "time": "2013-10-28 16:58:15"
         }
     ],
     "packages-dev": [
