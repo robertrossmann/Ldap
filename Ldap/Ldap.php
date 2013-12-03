@@ -15,6 +15,9 @@
 
 namespace Ldap;
 
+use Ldap\Modules\ModuleManager;
+use \Evenement\EventEmitter;
+
 /**
  * Class encapsulation for php's ldap functions
  */
@@ -52,7 +55,21 @@ class Ldap
   protected $resource;          // The ldap resource
   protected $rootDSE;           // The rootDSE entry of the server, if loaded by self::rootDSE()
   protected $rootDSEAttributes; // The rootDSE attributes that were requested to be retrieved last time
+  protected $e;                 // An instance of EventEmitter to handle events for the module system
 
+
+  protected function loadModules()
+  {
+    // Get all enabled modules
+    $modules = ModuleManager::getModules();
+    $this->e = new EventEmitter();
+
+    foreach ( $modules as $module )
+    {
+      $module = new $module;
+      $module->attachEvents( $this->e );
+    }
+  }
 
   /**
    * Connect to an ldap server at specified port
@@ -71,9 +88,13 @@ class Ldap
    */
   public function __construct( $server, $port = 389 )
   {
+    $this->loadModules();
+
     $this->resource = ldap_connect( $server, $port );
     // Use LDAPv3 by default
     $this->set_option( Option::ProtocolVersion, 3 );
+
+    $this->e->emit( 'new' );
   }
 
   /**
