@@ -16,13 +16,16 @@
 namespace Ldap;
 
 use Ldap\Modules\ModuleManager;
-use \Evenement\EventEmitter;
+use \Evenement\EventEmitterInterface;
+use \Evenement\EventEmitterTrait;
 
 /**
  * Class encapsulation for php's ldap functions
  */
-class Ldap
+class Ldap implements EventEmitterInterface
 {
+  use EventEmitterTrait;
+
   protected static $allowed_static_methods = [
     'dn2ufn',
     'err2str',
@@ -58,19 +61,6 @@ class Ldap
   protected $e;                 // An instance of EventEmitter to handle events for the module system
 
 
-  protected function loadModules()
-  {
-    // Get all enabled modules
-    $modules = ModuleManager::getModules();
-    $this->e = new EventEmitter();
-
-    foreach ( $modules as $module )
-    {
-      $module = new $module;
-      $module->attachEvents( $this->e );
-    }
-  }
-
   /**
    * Connect to an ldap server at specified port
    *
@@ -94,7 +84,7 @@ class Ldap
     // Use LDAPv3 by default
     $this->set_option( Option::ProtocolVersion, 3 );
 
-    $this->e->emit( 'new' );
+    $this->emit( 'new' );
   }
 
   /**
@@ -197,6 +187,23 @@ class Ldap
     $return = call_user_func_array( $method, $args );
 
     return new Response( $this, $return );
+  }
+
+  /**
+   * Load and initialise the enabled modules
+   *
+   * @return      void
+   */
+  protected function loadModules()
+  {
+    // Get all enabled modules
+    $modules = ModuleManager::getModules();
+
+    foreach ( $modules as $module )
+    {
+      $module = new $module;
+      $module->attachEvents( $this );
+    }
   }
 
 
