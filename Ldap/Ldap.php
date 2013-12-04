@@ -78,7 +78,7 @@ class Ldap implements EventEmitterInterface
    */
   public function __construct( $server, $port = 389 )
   {
-    $this->loadModules();
+    $this->loadModules();           // Load and initialise modules
 
     $this->resource = ldap_connect( $server, $port );
     // Use LDAPv3 by default
