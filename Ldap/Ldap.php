@@ -61,13 +61,13 @@ class Ldap
    * protocol. If you need to use LDAPv2 you can set the protocol version
    * yourself after construction, but before you attempt to bind.
    *
-   * <code>
+   * ```
    * $ldap = new Ldap\Ldap( 'example.com' );  // Uses LDAPv3 automatically
    * $ldap->set_option( Ldap\Option::ProtocolVersion, 2 ); Downgrade to v2
-   * </code>
+   * ```
    *
-   * @param   string          A server to be connected to
-   * @param   int             An optional port to use for connection
+   * @param   string    $server      A server to be connected to
+   * @param   int       $port        An optional port to use for connection
    */
   public function __construct( $server, $port = 389 )
   {
@@ -89,9 +89,9 @@ class Ldap
   /**
    * Read the rootDSE data
    *
-   * @param   string|array    A single entry or an array of rootDSE entries to be loaded
-   * @param   bool            If true, any and all previously loaded rootDSE data
-   *                          will be discarded and loaded from the server again
+   * @param   string|array    $attributes     A single entry or an array of rootDSE entries to be loaded
+   * @param   bool            $force          If true, any and all previously loaded rootDSE data
+   *                                          will be discarded and loaded from the server again
    *
    * @return  Response        An instance of the Response class containing the rootDSE data
    *                          on success, or the reason for failure otherwise

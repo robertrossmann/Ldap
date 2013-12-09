@@ -18,7 +18,7 @@ namespace Ldap;
 /**
  * A collection of constants with all known ldap options
  *
- * @see     <a href="http://www.php.net/manual/en/function.ldap-get-option.php">PHP - ldap_get_option()</a>
+ * @see     http://www.php.net/manual/en/function.ldap-get-option.php   PHP - ldap_get_option()
  */
 class Option extends \Dreamscapes\Enumeration
 {

@@ -30,7 +30,7 @@ namespace Ldap;
  * @property-read   int       $code         A status code of the ldap operation executed
  * @property-read   string    $message      A status message associated with the status code
  * $property-read   array     $referrals    If the server responds with referrals, you will find them here
- * @property-read   binary    $cookie       For paged result responses, a cookie will be here, if returned from server
+ * @property-read   string    $cookie       For paged result responses, a cookie will be here, if returned from server
  * @property-read   int       $estimated    The estimated number of objects remaining to return from server
  *                                          when doing paged searches ( not all ldap implementations return this value )
  * @property-read   string    $matchedDN    Not much is known here; read php's documentation about ldap_parse_result()
