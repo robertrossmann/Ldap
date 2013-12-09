@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <parser>
+    <target>docs</target>
+    <visibility>public</visibility>
+  </parser>
+  <transformer>
+    <target>docs</target>
+  </transformer>
+  <files>
+    <directory>Ldap</directory>
+  </files>
+  <title>Ldap</title>
+  <transformations>
+    <template name="responsive"></template>
+  </transformations>
+</phpdoc>
