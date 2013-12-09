@@ -41,6 +41,9 @@ class ModuleManager
   {
     if ( in_array( 'Ldap\ModuleInterface', class_implements( $module, true ) ) )
     {
+      // Is the module already loaded?
+      if ( in_array( $module, static::$enabledModules ) ) return;
+
       static::$enabledModules[] = $module;
     }
     else throw new \Exception( "Module $module does not implement Ldap\ModuleInterface interface" );
