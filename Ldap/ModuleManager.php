@@ -33,7 +33,7 @@ class ModuleManager
    * will not be notified of a newly enabled module
    *
    * @param     string    $module    The module's fully qualified class name (incl. namespace, if any).
-   * The module **must** implement **ModuleInterface**
+   *                                 The module **must** implement **ModuleInterface**
    *
    * @return    void
    */
