@@ -82,7 +82,7 @@ class Ldap implements EventEmitterInterface
     // Use LDAPv3 by default
     $this->set_option( Option::ProtocolVersion, 3 );
 
-    $this->emit( 'new' );
+    $this->emit( 'new', [$this] );
   }
 
   /**

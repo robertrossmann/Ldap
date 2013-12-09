@@ -98,6 +98,12 @@ class Response
         if ( $this->code == '52e' ) $this->code = ResponseCode::InvalidCredentials;
       }
     }
+
+    if ( ! $this->ok() )
+    {
+      $link->emit( 'serverError', [$link, $this] );
+    }
+    else $link->emit( 'response', [$link, $this] );
   }
 
   /**
