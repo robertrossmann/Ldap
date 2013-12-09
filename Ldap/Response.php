@@ -24,27 +24,27 @@ namespace Ldap;
  * the extracted data from the resource, and in some situations it may contain
  * other information described below.
  *
- * @property-read   mixed     $result       The expected result of an ldap operation ( boolean for compare
+ * @property    mixed     $result       The expected result of an ldap operation ( boolean for compare
  *                                          operations, resource for lookup operations etc. )
- * @property-read   array     $data         Only available when a resource is available - The data extracted from a resource
- * @property-read   int       $code         A status code of the ldap operation executed
- * @property-read   string    $message      A status message associated with the status code
- * $property-read   array     $referrals    If the server responds with referrals, you will find them here
- * @property-read   string    $cookie       For paged result responses, a cookie will be here, if returned from server
- * @property-read   int       $estimated    The estimated number of objects remaining to return from server
+ * @property    array     $data         Only available when a resource is available - The data extracted from a resource
+ * @property    int       $code         A status code of the ldap operation executed
+ * @property    string    $message      A status message associated with the status code
+ * $property    array     $referrals    If the server responds with referrals, you will find them here
+ * @property    string    $cookie       For paged result responses, a cookie will be here, if returned from server
+ * @property    int       $estimated    The estimated number of objects remaining to return from server
  *                                          when doing paged searches ( not all ldap implementations return this value )
- * @property-read   string    $matchedDN    Not much is known here; read php's documentation about ldap_parse_result()
+ * @property    string    $matchedDN    Not much is known here; read php's documentation about ldap_parse_result()
  */
 class Response
 {
-  protected $result;        // The raw result as returned from server
-  protected $data;          // The actual ldap data extracted from result, in case a resource was returned
-  protected $code;          // Status code of the operation
-  protected $message;       // Textual representation of the status code
-  protected $referrals;     // List of returned referrals in the resultset ( if any )
-  protected $cookie;        // A pagination cookie if returned from server
-  protected $estimated;     // An estimated number of objects yet to be returned from server for paged searches
-  protected $matchedDN;     // Purpose unknown; available for compatibility reasons
+  public $result;        // The raw result as returned from server
+  public $data;          // The actual ldap data extracted from result, in case a resource was returned
+  public $code;          // Status code of the operation
+  public $message;       // Textual representation of the status code
+  public $referrals;     // List of returned referrals in the resultset ( if any )
+  public $cookie;        // A pagination cookie if returned from server
+  public $estimated;     // An estimated number of objects yet to be returned from server for paged searches
+  public $matchedDN;     // Purpose unknown; available for compatibility reasons
 
 
   public function __construct( Ldap $link, $result = null )
@@ -165,16 +165,6 @@ class Response
     return $result;
   }
 
-
-  /**
-   * Read-only property access mapper
-   *
-   * @internal
-   */
-  public function __get( $property )
-  {
-    return $this->$property;
-  }
 
   public function __destroy()
   {
