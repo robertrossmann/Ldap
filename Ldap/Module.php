@@ -13,9 +13,32 @@
  */
 
 
-namespace Ldap\Modules;
+namespace Ldap;
 
-abstract class LdapModule
+/**
+ * A good starting point for your own modules
+ *
+ * This class provides all the required functionality a module should implement. All you have to do in your
+ * implementations is to create methods that handle various events triggered by the library.
+ *
+ * #### Example
+ * ```
+ * class MyModule extends Ldap\Module
+ * {
+ *   public function onNew()
+ *   {
+ *     echo "A new Ldap instance has been just created!";
+ *   }
+ * }
+ * ```
+ *
+ * If you name your methods in the format **on&lt;CamelCaseEventName&gt;** your methods will be set as event handlers
+ * for those events automatically. If you need other method names or naming conventions, you should extend/override
+ * the **self::attachEvents()** method.
+ *
+ * @see  Ldap\Module::attachEvents()     Override if needed to attach non-standard methods as event listeners
+ */
+abstract class Module implements ModuleInterface
 {
   /**
    * Register this module with the library so it can be used
@@ -28,7 +51,7 @@ abstract class LdapModule
   }
 
   /**
-   * Disable the module so it will not be used anymore
+   * Disable the module so it will not be used in new Ldap instances
    *
    * @return    void
    */
@@ -41,7 +64,7 @@ abstract class LdapModule
   /**
    * Attach events to the given event emitter
    *
-   * @param     EventEmitter    $emitter    The Ldap instance to which this module will listen
+   * @param     \Evenement\EventEmitterInterface    $emitter    The Ldap instance to which this module will listen
    *
    * @return    void
    */
@@ -55,6 +78,16 @@ abstract class LdapModule
     }
   }
 
+  /**
+   * Generate a list of events this module handles and the respective method names that handle the events
+   *
+   * #### Example:
+   * ```
+   * ["new" => "onNew"]
+   * ```
+   *
+   * @return    array
+   */
   protected function getSubscriptionMap()
   {
     $subscriptions = [];

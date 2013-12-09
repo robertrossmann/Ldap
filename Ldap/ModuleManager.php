@@ -13,11 +13,13 @@
  */
 
 
-namespace Ldap\Modules;
+namespace Ldap;
 
 /**
  * ModuleManager keeps track of which modules are currently enabled and provides the list
  * to the library when necessary.
+ *
+ * In most situations you do not need to interface with this class in any way.
  */
 class ModuleManager
 {
@@ -30,19 +32,25 @@ class ModuleManager
    * Enabled modules will be used only with new instances. Current instances of classes that use the modules
    * will not be notified of a newly enabled module
    *
-   * @param     string    $module    The module's fully qualified class name (incl. namespace, if any)
+   * @param     string    $module    The module's fully qualified class name (incl. namespace, if any).
+   * The module **must** implement **ModuleInterface**
+   *
    * @return    void
    */
   public static function enableModule( $module )
   {
-    static::$enabledModules[] = $module;
+    if ( in_array( 'Ldap\ModuleInterface', class_implements( $module, true ) ) )
+    {
+      static::$enabledModules[] = $module;
+    }
+    else throw new \Exception( "Module $module does not implement Ldap\ModuleInterface interface" );
   }
 
   /**
    * Disable a module
    *
-   * Disabled modules will not be removed from instances that currenly use the module, but new instances
-   * will not load it.
+   * Disabled modules will not be removed from instances that currenly use them, but new instances
+   * will not load them.
    *
    * @param     string    $module    The module's fully qualified class name (incl. namespace, if any)
    *
@@ -58,7 +66,7 @@ class ModuleManager
   }
 
   /**
-   * Get a list of currently enabled modules.
+   * Get a list of currently enabled modules, in the order they were enabled
    *
    * @return    array    An array of fully qualified class names
    */

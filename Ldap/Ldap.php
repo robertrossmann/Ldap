@@ -15,7 +15,6 @@
 
 namespace Ldap;
 
-use Ldap\Modules\ModuleManager;
 use \Evenement\EventEmitterInterface;
 use \Evenement\EventEmitterTrait;
 
@@ -58,7 +57,6 @@ class Ldap implements EventEmitterInterface
   protected $resource;          // The ldap resource
   protected $rootDSE;           // The rootDSE entry of the server, if loaded by self::rootDSE()
   protected $rootDSEAttributes; // The rootDSE attributes that were requested to be retrieved last time
-  protected $e;                 // An instance of EventEmitter to handle events for the module system
 
 
   /**
