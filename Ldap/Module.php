@@ -47,7 +47,7 @@ abstract class Module implements ModuleInterface
    */
   public static function enable()
   {
-    ModuleManager::enableModule( get_called_class() );
+    Internal\ModuleManager::enableModule( get_called_class() );
   }
 
   /**
@@ -57,7 +57,7 @@ abstract class Module implements ModuleInterface
    */
   public static function disable()
   {
-    ModuleManager::disableModule( get_called_class() );
+    Internal\ModuleManager::disableModule( get_called_class() );
   }
 
 

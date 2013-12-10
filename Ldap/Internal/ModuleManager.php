@@ -13,7 +13,7 @@
  */
 
 
-namespace Ldap;
+namespace Ldap\Internal;
 
 /**
  * ModuleManager keeps track of which modules are currently enabled and provides the list

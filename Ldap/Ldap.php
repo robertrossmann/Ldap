@@ -195,7 +195,7 @@ class Ldap implements EventEmitterInterface
   protected function initModules()
   {
     // Get all enabled modules
-    $modules = ModuleManager::getModules();
+    $modules = Internal\ModuleManager::getModules();
 
     foreach ( $modules as $module )
     {
