@@ -25,14 +25,6 @@ class Ldap implements EventEmitterInterface
 {
   use EventEmitterTrait;
 
-  protected static $allowed_static_methods = [
-    'dn2ufn',
-    'err2str',
-    'explode_dn',
-    'ldap_8859_to_t61',
-    't61_to_8859',
-  ];
-
   protected static $allowed_methods = [
     'add',
     'bind',
@@ -202,29 +194,5 @@ class Ldap implements EventEmitterInterface
       $module = new $module;
       $module->attachEvents( $this );
     }
-  }
-
-
-  public static function __callStatic( $method, $args )
-  {
-    // Check if this method can be called on this object
-    if ( ! in_array( $method, static::$allowed_static_methods ) )
-    {
-      $trace = debug_backtrace();
-      $method = $trace[0]['class'] . $trace[0]['type'] . $method;
-      trigger_error(
-        "Call to undefined method $method in " . $trace[0]['file'] .
-        " on line " . $trace[0]['line'],
-        E_USER_ERROR
-      );
-    }
-
-    // Prefix the method with ldap_ if it's not already prefixed
-    ( stripos( $method, 'ldap_' ) !== 0 ) && $method = 'ldap_' . $method;
-
-    $data = call_user_func_array( $method, $args );
-    if ( isset( $data['count'] ) ) unset( $data['count'] ); // No one cares!
-
-    return $data;
   }
 }
