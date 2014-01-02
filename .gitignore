@@ -2,3 +2,5 @@
 thumbs.db
 vendor
 docs
+tests/_log/*
+!tests/_log/.gitkeep

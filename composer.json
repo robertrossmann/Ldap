@@ -19,5 +19,8 @@
     },
     "autoload": {
         "psr-0": { "Ldap\\": "." }
+    },
+    "require-dev": {
+        "codeception/codeception": "~1.8"
     }
 }
