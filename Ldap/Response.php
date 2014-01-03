@@ -15,6 +15,8 @@
 
 namespace Ldap;
 
+use \Ldap\Internal\Request;
+
 /**
  * An encapsulation of a ldap response information
  *
@@ -37,6 +39,7 @@ namespace Ldap;
  */
 class Response
 {
+  public $request;       // The Request instance that was executed ( if any )
   public $result;        // The raw result as returned from server
   public $data;          // The actual ldap data extracted from result, in case a resource was returned
   public $code;          // Status code of the operation
@@ -47,9 +50,10 @@ class Response
   public $matchedDN;     // Purpose unknown; available for compatibility reasons
 
 
-  public function __construct( Ldap $link, $result = null )
+  public function __construct( Ldap $link, Request $req = null, $result = null )
   {
-    $this->result = $result;
+    $this->request = $req;
+    $this->result  = $result;
 
     if ( is_resource( $result ) )
     {
@@ -69,6 +73,8 @@ class Response
       // Try to extract pagination cookie and estimated number of objects to be returned
       // Since there's no way to tell if pagination has been enabled or not, I am suppressing php errors
       @ldap_control_paged_result_response( $link->resource(), $result, $this->cookie, $this->estimated );
+      // Also save the cookie to the original request if we have one
+      $req instanceof Request && $req->cookie( $this->cookie );
     }
     else
     {

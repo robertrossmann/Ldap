@@ -17,6 +17,7 @@ namespace Ldap;
 
 use \Evenement\EventEmitterInterface;
 use \Evenement\EventEmitterTrait;
+use \Ldap\Internal\Request;
 
 /**
  * Class encapsulation for php's ldap functions
@@ -30,9 +31,6 @@ class Ldap implements EventEmitterInterface
     'bind',
     'compare',
     'delete',
-    'ldap_list',
-    'ldap_read',
-    'ldap_search',
     'mod_add',
     'mod_del',
     'mod_replace',
@@ -88,6 +86,26 @@ class Ldap implements EventEmitterInterface
   }
 
   /**
+   * Perform an ldap operation on this connection
+   *
+   * @param     Request    $req       An instance of the Request class describing the operation to be performed
+   *
+   * @return    Response              An instance of the Response class holding the data returned from server
+   */
+  public function execute( Request $req )
+  {
+    $this->emit( 'request', [$this, $req] );
+
+    $req->prepareForExecution( $this );       // Requests sometimes need to do stuff with link before actual execution
+    $args = $req->getActionParameters();      // Arguments to be passed to the action
+    array_unshift( $args, $this->resource );  // Prepend the resource to the arguments array
+
+    $return = call_user_func_array( $req->action(), $args );
+
+    return new Response( $this, $req, $return );
+  }
+
+  /**
    * Read the rootDSE data
    *
    * @param   string|array    $attributes     A single entry or an array of rootDSE entries to be loaded
@@ -113,7 +131,9 @@ class Ldap implements EventEmitterInterface
     }
 
     // Read the rootDSE entry from the server
-    $resp = $this->ldap_read( '', 'objectclass=*', $attributes );
+    $req = new \Ldap\Request\ReadRequest;
+    $req->base( '' )->attributes( $attributes );
+    $resp = $this->execute( $req );
 
     // If the query was not successful, return the response to
     // the other guy to figure out what to do
@@ -129,7 +149,7 @@ class Ldap implements EventEmitterInterface
   {
     ldap_sort( $this->resource, $response->result, $attribute );
 
-    return new Response( $this, $response->result );
+    return new Response( $this, $response->request, $response->result );
   }
 
   public function get_option( $option )
@@ -138,21 +158,8 @@ class Ldap implements EventEmitterInterface
 
     ldap_get_option( $this->resource, $option, $return );
 
-    return new Response( $this, $return );
+    return new Response( $this, null, $return );
   }
-
-  public function paged_result()
-  {
-    $args = func_get_args();
-
-    // Prepend the resource to the arguments array
-    array_unshift( $args, $this->resource );
-
-    $return = call_user_func_array( 'ldap_control_paged_result', $args );
-
-    return new Response( $this, $return );
-  }
-
 
   public function __call( $method, $args )
   {
@@ -171,12 +178,9 @@ class Ldap implements EventEmitterInterface
     // Prepend the resource to the arguments array
     array_unshift( $args, $this->resource );
 
-    // Prefix the method with ldap_ if it's not already prefixed
-    ( stripos( $method, 'ldap_' ) !== 0 ) && $method = 'ldap_' . $method;
+    $return = call_user_func_array( 'ldap_' . $method, $args );
 
-    $return = call_user_func_array( $method, $args );
-
-    return new Response( $this, $return );
+    return new Response( $this, null, $return );
   }
 
   /**
