@@ -18,6 +18,7 @@ namespace Ldap;
 use \Evenement\EventEmitterInterface;
 use \Evenement\EventEmitterTrait;
 use \Ldap\Internal\Request;
+use \Ldap\Internal\LdapLink;
 
 /**
  * Class encapsulation for php's ldap functions
@@ -44,7 +45,7 @@ class Ldap implements EventEmitterInterface
   ];
 
 
-  protected $resource;          // The ldap resource
+  protected $link;              // The ldap link
   protected $rootDSE;           // The rootDSE entry of the server, if loaded by self::rootDSE()
   protected $rootDSEAttributes; // The rootDSE attributes that were requested to be retrieved last time
 
@@ -68,7 +69,9 @@ class Ldap implements EventEmitterInterface
   {
     $this->initModules(); // Load and initialise modules
 
-    $this->resource = ldap_connect( $server, $port );
+    // Allow dependency injection for testing purposes
+    $this->link = func_num_args() > 2 ? func_get_arg( 2 ) : new LdapLink( $server, $port );
+
     // Use LDAPv3 by default
     $this->set_option( Option::ProtocolVersion, 3 );
 
@@ -76,13 +79,13 @@ class Ldap implements EventEmitterInterface
   }
 
   /**
-   * Get the resource for the ldap connection
+   * Get the instance of the encapsulated ldap link resource
    *
-   * @return  Resource        A resource identifier for the given ldap connection
+   * @return  Ldap\Internal\LdapLink    An instance that encapsulates the ldap link resource
    */
   public function resource()
   {
-    return $this->resource;
+    return $this->link;
   }
 
   /**
@@ -98,9 +101,8 @@ class Ldap implements EventEmitterInterface
 
     $req->prepareForExecution( $this );       // Requests sometimes need to do stuff with link before actual execution
     $args = $req->getActionParameters();      // Arguments to be passed to the action
-    array_unshift( $args, $this->resource );  // Prepend the resource to the arguments array
 
-    $return = call_user_func_array( $req->action(), $args );
+    $return = call_user_func_array( [$this->link, $req->action()], $args );
 
     return new Response( $this, $req, $return );
   }
@@ -147,7 +149,7 @@ class Ldap implements EventEmitterInterface
 
   public function sort( Response $response, $attribute )
   {
-    ldap_sort( $this->resource, $response->result, $attribute );
+    $this->link->sort( $this->link, $response->result, $attribute );
 
     return new Response( $this, $response->request, $response->result );
   }
@@ -156,7 +158,7 @@ class Ldap implements EventEmitterInterface
   {
     $return = null;
 
-    ldap_get_option( $this->resource, $option, $return );
+    $this->link->get_option( $this->link, $option, $return );
 
     return new Response( $this, null, $return );
   }
@@ -175,10 +177,7 @@ class Ldap implements EventEmitterInterface
       );
     }
 
-    // Prepend the resource to the arguments array
-    array_unshift( $args, $this->resource );
-
-    $return = call_user_func_array( 'ldap_' . $method, $args );
+    $return = call_user_func_array( [$this->link, $method], $args );
 
     return new Response( $this, null, $return );
   }

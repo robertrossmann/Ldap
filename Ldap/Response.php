@@ -58,13 +58,13 @@ class Response
     if ( is_resource( $result ) )
     {
       // Get the status code, matched DN and referrals from the response
-      ldap_parse_result( $link->resource(), $result, $this->code, $this->matchedDN, $this->message, $this->referrals );
+      $link->resource()->parse_result( $result, $this->code, $this->matchedDN, $this->message, $this->referrals );
 
       // Get the string representation of the status code
       $this->message = ldap_err2str( $this->code );
 
       // Extract the data from the resource
-      $this->data = ldap_get_entries( $link->resource(), $result );
+      $this->data = $link->resource()->get_entries( $result );
       $this->data = $this->cleanup_result( $this->data );
 
       // Remove the referrals array if there's nothing inside
@@ -72,14 +72,14 @@ class Response
 
       // Try to extract pagination cookie and estimated number of objects to be returned
       // Since there's no way to tell if pagination has been enabled or not, I am suppressing php errors
-      @ldap_control_paged_result_response( $link->resource(), $result, $this->cookie, $this->estimated );
+      @$link->resource()->paged_result_response( $result, $this->cookie, $this->estimated );
       // Also save the cookie to the original request if we have one
       $req instanceof Request && $req->cookie( $this->cookie );
     }
     else
     {
-      $this->code     = ldap_errno( $link->resource() );
-      $this->message  = ldap_error( $link->resource() );
+      $this->code     = $link->resource()->errno();
+      $this->message  = $link->resource()->error();
     }
 
     // Active Directory conceals some additional error codes in the ErrorMessage of the response
@@ -88,7 +88,7 @@ class Response
     if ( $this->code == 49 )
     {
       $message = null;
-      ldap_get_option( $link->resource(), Option::ErrorString, $message );
+      $link->resource()->get_option( Option::ErrorString, $message );
 
       if ( stripos( $message, 'AcceptSecurityContext' ) !== false )
       {
