@@ -79,7 +79,7 @@ class LdapLink
 
   public function parse_result( $result, &$errcode, &$matcheddn = null, &$errmsg = null, &$referrals = null )
   {
-    ldap_parse_result( $this->resource, $result, $errcode, $errmsg, $referrals );
+    ldap_parse_result( $this->resource, $result, $errcode, $matcheddn, $errmsg, $referrals );
   }
 
   public function __call( $method, $args )
