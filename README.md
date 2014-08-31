@@ -1,6 +1,10 @@
 # Ldap :: Object encapsulation of php's ldap functions
 
-This library provides a class encapsulation of php's ldap functions. This might be very useful for mocking during unit testing or if you simply prefer the beauty of OOP.
+> This library provides a class encapsulation of php's ldap functions. This might be very useful for mocking during unit testing or if you simply prefer the beauty of OOP.
+
+## DEPRECATION NOTICE
+
+This library is no longer maintained and its usage is discouraged. As a replacement, please take a look at [Dreamscapes/Ldap-Core](https://github.com/Dreamscapes/Ldap-Core) which offers similar functionality.
 
 ## Features
 
